@@ -1,9 +1,7 @@
 #include "GL/glut.h"
-#include "GL/gl.h"
 
 #include <iostream>
 #include <fstream>
-#include <cstring>
 
 using namespace std;
 

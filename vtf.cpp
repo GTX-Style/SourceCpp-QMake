@@ -10,12 +10,6 @@ VTF_H::VTF_H(const char *fileAddress)
     fileReader->seekg(0, ios::end);
     this->FileSize = fileReader->tellg();
 
-    {
-        cout << fileAddress << endl;
-        cout << this->Header->Signature << " " << this->Header->Version[0] << "." << this->Header->Version[1];
-        cout << " (" << this->Header->Width << " x " << this->Header->Height << ")" << endl << endl;
-    }
-
     int *UiBytesPerPixels = new int[27]
         {
             4, 4, 3, 3, 2, 1,
@@ -71,7 +65,20 @@ void VTF_H::OGL_CreateImage()
 
     glGenTextures(1, &texId);
     glBindTexture(GL_TEXTURE_2D, texId);
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    switch (this->Header->Flags)
+    {
+    case VTFImageFlags::TEXTUREFLAGS_CLAMPS:
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        break;
+
+    case VTFImageFlags::TEXTUREFLAGS_CLAMPT:
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        break;
+    }
+
     glCompressedTexImage2D(GL_TEXTURE_2D, 0, this->InternalFormat, this->Header->Width, this->Header->Height, 0, this->ImageSize, this->CompressedImage);
 }

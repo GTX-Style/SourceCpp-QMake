@@ -9,7 +9,9 @@ CONFIG += console
 CONFIG -= app_bundle
 
 SOURCES += main.cpp \
-    vtf.cpp
+    vtf.cpp \
+    bsp.cpp
 
 HEADERS += \
-    vtf.h
+    vtf.h \
+    bsp.h
